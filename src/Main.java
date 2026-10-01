@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -35,28 +36,32 @@ public class Main {
 
         System.out.println("Ваш ответ:\t" + answer);
 
-        int x;
-        if (answer.equals("ДА")) {
-            System.out.println("Начинаем играть");
 
-            System.out.println("Введите куда будет ходить персонаж (ход возможен только по вертикали и горизонтали на одну клетку)");
-            System.out.println("Координаты персонажа - (x: " + personX + ", y: " + personY + ")");
+        switch (answer) {
+            case "ДА": {
+                System.out.println("Начинаем играть");
+                System.out.println("Выберит сложность игры (от 0 до 5):");
+                int difficultGame = scanner.nextInt();
+                System.out.println("Выбранная сложность:\t" + difficultGame);
 
-            x = scanner.nextInt();
-            int y = scanner.nextInt();
+                System.out.println("Введите куда будет ходить персонаж (ход возможен только по вертикали и горизонтали на одну клетку)");
+                System.out.println("Координаты персонажа - (x: " + personX + ", y: " + personY + ")");
 
-            if (x != personX){
-                if (y != personY) {
-                    System.out.println("Некорректный ход");
+                int x = scanner.nextInt();
+                int y = scanner.nextInt();
+
+                if (x != personX) {
+                    if (y != personY) {
+                        System.out.println("Некорректный ход");
+                    }
                 }
-            }
-        } else if (answer.equals("НЕТ")) {
-            System.out.println("Почему ты не захотел со мной играть? :(");
-        } else {
-            System.out.println("гагагагага");
-
+            } break;
+            case "НЕТ":
+                System.out.println("Жаль, приходи еще!");
+                break;
+            default:
+                System.out.println("Данные введены некорректно");
         }
-
 
     }
 }

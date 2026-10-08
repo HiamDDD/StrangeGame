@@ -6,12 +6,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-
         Random random = new Random();
         String person = "\uD83E\uDDD9";
         String monster = "\uD83E\uDDDF";
         String castle = "\uD83C\uDFF0";
-
+        String leftBlock = " | ";
+        String rightBlock = " | ";
+        String wall = "+ —— + —— + —— + —— + —— +";
+        //String[] board = new String[sizeBoard * sizeBoard];
         int personLive = 3;
         int sizeBoard = 5;
         int personX;
@@ -51,13 +53,26 @@ public class Main {
                 System.out.println("Выбранная сложность:\t" + difficultGame);
 
                 while ((personLive > 0) && !(castleX == personX && castleY == personY)) {
-                /*           вывод на экран игрового                                 */
+                //           вывод на экран игрового
                     for (int y = 1; y <= sizeBoard; y++) {
+                        System.out.println(wall);
+
                         for (int x = 1; x <= sizeBoard; x++) {
-                            //блаблабла
+                            System.out.print(leftBlock);
+
+                            if (personY == y && castleY == y){
+                                System.out.print(person);
+
+                            } else if (castleX == x && castleY == y) {
+                                System.out.print(castle);
+                            } else {
+                                System.out.print("   ");
+                            }
                         }
+                        System.out.println(rightBlock);
                     }
-                 /*                     вывод на экран игрового                     */
+                    System.out.println(wall);
+                 //                     вывод на экран игрового
                     System.out.println("Введите куда будет ходить персонаж (ход возможен только по вертикали и горизонтали на одну клетку)");
                     System.out.println("Координаты персонажа - (x: " + personX + ", y: " + personY + ")");
 

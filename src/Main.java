@@ -13,7 +13,6 @@ public class Main {
         String leftBlock = " | ";
         String rightBlock = " | ";
         String wall = "+ —— + —— + —— + —— + —— +";
-        //String[] board = new String[sizeBoard * sizeBoard];
         int personLive = 3;
         int sizeBoard = 5;
         int personX;
@@ -21,6 +20,12 @@ public class Main {
         int step = 0;
         int castleY = 1;
         int castleX = 1 + random.nextInt(sizeBoard);
+        String[] board = new String[sizeBoard * sizeBoard];
+        for (int y = 1; y <= sizeBoard; y++) {
+            for (int x = 1; x <= sizeBoard; x++) {
+                board[(y - 1) * sizeBoard + x - 1] = "  ";
+            }
+        }
 
 
         personX = 1 + sizeBoard / 2;
@@ -38,6 +43,10 @@ public class Main {
                 + "| " + person + " |    |    |    |    |\n"
                 + "+ —— + —— + —— + —— + —— +";
 
+        board[(castleY - 1) * sizeBoard + castleX - 1] = castle;
+        board[(personY - 1) * sizeBoard + personX - 1] = person;
+
+
         System.out.println("Привет! Ты готов начать играть в игру? (Напиши: ДА или НЕТ)");
 
         Scanner scanner = new Scanner(System.in);
@@ -52,22 +61,13 @@ public class Main {
                 int difficultGame = scanner.nextInt();
                 System.out.println("Выбранная сложность:\t" + difficultGame);
 
-                while ((personLive > 0) && !(castleX == personX && castleY == personY)) {
+                while (true) {
                 //           вывод на экран игрового
                     for (int y = 1; y <= sizeBoard; y++) {
                         System.out.println(wall);
-
                         for (int x = 1; x <= sizeBoard; x++) {
                             System.out.print(leftBlock);
-
-                            if (personY == y && castleY == y){
-                                System.out.print(person);
-
-                            } else if (castleX == x && castleY == y) {
-                                System.out.print(castle);
-                            } else {
-                                System.out.print("   ");
-                            }
+                            System.out.print(board[(y - 1) * sizeBoard + x - 1]);
                         }
                         System.out.println(rightBlock);
                     }
@@ -82,14 +82,35 @@ public class Main {
                     if (x != personX && y != personY) {
                         System.out.println("Некорректный ход");
                     } else if (Math.abs(x - personX) == 1 || Math.abs(y - personY) == 1) {
-                        personX = x;
-                        personY = y;
-                        step += 1;
-                        System.out.println("Ход корректный; Новые координаты: " +
-                                personX + ", " + personY + "\nХод номер: " + step);
+                        if (board[(y - 1) * sizeBoard + x - 1].equals("  ")) {
+                            board[(personY - 1) * sizeBoard + personX - 1] = "  ";
+
+                            personX = x;
+                            personY = y;
+                            step++;
+
+                            System.out.println(
+                                    "Ход корректный; новые координаты: "
+                                            + personX + ", " + personY
+                                            + "\nХод номер: " + step
+                            );
+                        } else if (board[(y - 1) * sizeBoard + x - 1].equals(castle)) {
+                            System.out.println("Вы прошли игру!");
+                            break;
+                        } else {
+                            System.out.println("Решите задачу.");
+                        }
                     } else {
                         System.out.println("Координаты не изменены");
                     }
+
+                    if (personLive <= 0) {
+                        break;
+                    }
+                }
+
+                if (personLive <= 0) {
+                    System.out.println("Закончились жизни. Итог: ...");
                 }
 
             } break;

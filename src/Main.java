@@ -19,32 +19,24 @@ public class Main {
         int personY;
         int step = 0;
         int castleY = 1;
+        int countMonster = sizeBoard * sizeBoard - sizeBoard - 1;  //потом менять
         int castleX = 1 + random.nextInt(sizeBoard);
-        String[] board = new String[sizeBoard * sizeBoard];
+        String[][] board = new String [sizeBoard][sizeBoard];
         for (int y = 1; y <= sizeBoard; y++) {
             for (int x = 1; x <= sizeBoard; x++) {
-                board[(y - 1) * sizeBoard + x - 1] = "  ";
+                board[y - 1][x - 1] = "  ";
             }
         }
 
 
-        personX = 1 + sizeBoard / 2;
-        personY = 1 + sizeBoard / 2;
-        // \n, \t - спец символ
-        String gamingField = "+ —— + —— + —— + —— + —— +\n"
-                + "|    |    |    |    |    |\n"
-                + "+ —— + —— + —— + —— + —— +\n"
-                + "|    |    |    |    |    |\n"
-                + "+ —— + —— + —— + —— + —— +\n"
-                + "|    |    | " + monster + " |    |    |\n"
-                + "+ —— + —— + —— + —— + —— +\n"
-                + "|    |    |    |    |    |\n"
-                + "+ —— + —— + —— + —— + —— +\n"
-                + "| " + person + " |    |    |    |    |\n"
-                + "+ —— + —— + —— + —— + —— +";
-
-        board[(castleY - 1) * sizeBoard + castleX - 1] = castle;
-        board[(personY - 1) * sizeBoard + personX - 1] = person;
+        personX = 1;
+        personY = sizeBoard;
+        for (int i = 0; i < countMonster; i++) {
+            board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster;
+        }
+        board[castleY - 1][castleX - 1] = castle;
+        board[castleY - 1][castleX - 1] = castle;
+        board[personY - 1][personX - 1] = person;
 
 
         System.out.println("Привет! Ты готов начать играть в игру? (Напиши: ДА или НЕТ)");
@@ -55,7 +47,7 @@ public class Main {
         System.out.println("Ваш ответ:\t" + answer);
 
         switch (answer) {
-            case "ДА": {
+            case "ДА", "y": {
                 System.out.println("Начинаем играть");
                 System.out.println("Выберит сложность игры (от 0 до 5):");
                 int difficultGame = scanner.nextInt();
@@ -63,11 +55,11 @@ public class Main {
 
                 while (true) {
                 //           вывод на экран игрового
-                    for (int y = 1; y <= sizeBoard; y++) {
+                    for (String[] row : board) {
                         System.out.println(wall);
-                        for (int x = 1; x <= sizeBoard; x++) {
+                        for (String col : row) {
                             System.out.print(leftBlock);
-                            System.out.print(board[(y - 1) * sizeBoard + x - 1]);
+                            System.out.print(col);
                         }
                         System.out.println(rightBlock);
                     }
@@ -75,26 +67,29 @@ public class Main {
                  //                     вывод на экран игрового
                     System.out.println("Введите куда будет ходить персонаж (ход возможен только по вертикали и горизонтали на одну клетку)");
                     System.out.println("Координаты персонажа - (x: " + personX + ", y: " + personY + ")");
+                    for (int i = 0; i < countMonster; i++) {
+                        board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster;
+                    }
+                    board[castleY - 1][castleX - 1] = castle;
 
                     int x = scanner.nextInt();
                     int y = scanner.nextInt();
-
                     if (x != personX && y != personY) {
                         System.out.println("Некорректный ход");
                     } else if (Math.abs(x - personX) == 1 || Math.abs(y - personY) == 1) {
-                        if (board[(y - 1) * sizeBoard + x - 1].equals("  ")) {
-                            board[(personY - 1) * sizeBoard + personX - 1] = "  ";
-
+                        if (board[y - 1][x - 1].equals("  ")) {
+                            board[personY - 1][personX - 1] = "  ";
                             personX = x;
                             personY = y;
                             step++;
+                            board[personY - 1][personX - 1] = person;
 
                             System.out.println(
                                     "Ход корректный; новые координаты: "
                                             + personX + ", " + personY
                                             + "\nХод номер: " + step
                             );
-                        } else if (board[(y - 1) * sizeBoard + x - 1].equals(castle)) {
+                        } else if (board[y - 1][ x - 1].equals(castle)) {
                             System.out.println("Вы прошли игру!");
                             break;
                         } else {

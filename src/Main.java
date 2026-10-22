@@ -17,6 +17,9 @@ public class Main {
         int sizeBoard = 5;
         int personX;
         int personY;
+
+        //Person person = new Person(); потом вернемся
+
         int step = 0;
         int castleY = 1;
         int difficultGame;
@@ -36,7 +39,6 @@ public class Main {
             board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster;
         }
         board[castleY - 1][castleX - 1] = castle;
-        board[castleY - 1][castleX - 1] = castle;
         board[personY - 1][personX - 1] = person;
 
 
@@ -55,13 +57,10 @@ public class Main {
                 System.out.println("Выбранная сложность:\t" + difficultGame);
 
                 while (true) {
+                    board[personY - 1][personX - 1] = person;
                     outputBoard(board, personLive);
                     System.out.println("Введите куда будет ходить персонаж (ход возможен только по вертикали и горизонтали на одну клетку)");
                     System.out.println("Координаты персонажа - (x: " + personX + ", y: " + personY + ")");
-                    for (int i = 0; i < countMonster; i++) {
-                        board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster;
-                    }
-                    board[castleY - 1][castleX - 1] = castle;
 
                     int x = scanner.nextInt();
                     int y = scanner.nextInt();

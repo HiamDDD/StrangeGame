@@ -13,6 +13,7 @@ public class Person {
         this.x = x;
         this.y = y;
     }
+
     Person(int x, int y) {
         this.x = x;
         this.y = y;

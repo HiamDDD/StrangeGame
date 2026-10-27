@@ -1,13 +1,44 @@
+import java.util.Random;
+
 public class Person {
-    int x, y;
-    String image = "\uD83E\uDDD9";
-    int live = 3;
+    private int x, y;
+    private String image = "\uD83E\uDDD9";
+    private int live = 3;
+    Person(int sizeBoard) {
+        Random random = new Random();
+        x = 1 + random.nextInt(sizeBoard);
+        y = sizeBoard;
+    }
     void move (int x, int y) {
         this.x = x;
         this.y = y;
     }
+    Person(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    Person() {
+        x = 1;
+        y = 1;
+    }
+    public int getX(){
+        return x;
+    }
+    public int getY(){
+        return y;
+    }
+    public int getLive(){
+        return live;
+    }
+    public String getImage(){
+        return image;
+    }
     public boolean isMoveCorrect(int x, int y) {
         return this.x == x && Math.abs(this.y - y) == 1 || this.y == y && Math.abs(this.x - x) == 1;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void downLive() {
@@ -17,4 +48,5 @@ public class Person {
             live--;
         }
     }
+
 }

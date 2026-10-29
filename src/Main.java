@@ -8,7 +8,7 @@ public class Main {
 
         Random random = new Random();
         //String personImage = "\uD83E\uDDD9";
-        String monster = "\uD83E\uDDDF";
+        //String monster = "\uD83E\uDDDF";
         String castle = "\uD83C\uDFF0";
         String leftBlock = " | ";
         String rightBlock = " | ";
@@ -33,11 +33,32 @@ public class Main {
         }
 
 
-        for (int i = 0; i < countMonster; i++) {
-            board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster;
-        }
         board[castleY - 1][castleX - 1] = castle;
         board[person.getY() - 1][person.getX() - 1] = person.getImage();
+        Monster[] monsters = new Monster[countMonster];
+        int count = 0;
+
+        while (count < countMonster) {
+            Monster monster;
+
+            if (random.nextBoolean()) {
+                monster = new Monster(sizeBoard);
+            } else if (random.nextBoolean()){
+                monster = new BigMonster(sizeBoard);
+            } else {
+                monster = new SmallMonster(sizeBoard);
+            }
+
+            int row = monster.getY() - 1;
+            int column = monster.getX() - 1;
+
+            if (board[row][column].equals("  ")) {
+                board[row][column] = monster.getImage();
+                monsters[count] = monster;
+                count++;
+            }
+        }
+
 
 
         System.out.println("Привет! Ты готов начать играть в игру? (Напиши: ДА или НЕТ)");
@@ -76,14 +97,18 @@ public class Main {
                             break;
                         } else {
                             System.out.println("Решите задачу.");
-                                if (taskMonster(difficultGame)) {
-                                    board[person.getY() - 1][person.getX() - 1] = "  ";
-                                    personX = x;
-                                    personY = y;
-                                    step++;
-                                } else {
-                                    personLive--;
+                            for (Monster monster : monsters) {
+                                if (monster.conflictPerson(x, y)) {
+                                    if (monster.taskMonster(difficultGame)) {
+                                        board[person.getY() - 1][person.getX() - 1] = "  ";
+                                        person.move(x, y);
+                                        step++;
+                                    } else {
+                                        person.downLive();
+                                    }
+                                    break;
                                 }
+                            }
                         }
                         //надо
                     } else {
